@@ -1,0 +1,3 @@
+[console_scripts]
+safir = safir.cli:main
+
