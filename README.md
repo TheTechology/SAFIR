@@ -1,152 +1,91 @@
-# SAFIR: Agricultură inteligentă bazată pe inteligență artificială și irigații pentru reziliență
+# SAFIR — Sistem AI de Monitorizare Irigații
 
-## Prezentare generală
+**Transformă Pixelii în Oxigen** · Asociația Grupul Verde · Vrancea, România
 
-SAFIR este o soluție **open-source și finalizată** de monitorizare inteligentă a irigațiilor pentru reziliența climatică în Laos. Proiectul a fost creat de **Asociația Grupul Verde** în parteneriat cu **35 de tineri din județul Vrancea, România**.
+---
 
-### Ce combină SAFIR
+SAFIR este o soluție **open-source** de monitorizare inteligentă a irigațiilor, creată de Asociația Grupul Verde împreună cu **55 de tineri din 5 țări europene** (România, Croația, Albania, Danemarca, Germania).
 
-- modele de prognoză a apelor subterane
-- modele LSTM pentru previziuni de umiditate a solului
-- controlere solare inteligente pentru irigații
-- programator de învățare prin consolidare pentru adaptare dinamică
-- endpoint-uri API și tablouri de bord open-data pentru acces și colaborare
+## Website
 
-## Angajament Open Source
+Deschide [index.html](index.html) direct în browser sau activează **GitHub Pages** din Settings → Pages → Branch: main pentru a-l servi online.
 
-Toate componentele sunt **publice și gratuite** pentru reutilizare, îmbunătățire și colaborare. Codul și datele senzorilor pot fi distribuite prin depozite Python și endpoint-uri API deschise pentru a sprijini transparența și adoptarea locală.
+## Ce face SAFIR
+
+- **Prognoză apă subterană** — modele de previziune bazate pe date senzor în timp real
+- **LSTM Umiditate Sol** — rețea neurală pentru optimizarea automată a irigațiilor
+- **Control Solar** — irigații inteligente pe bază de energie solară și stare baterie
+- **Reinforcement Learning** — planificare adaptivă a deciziilor de irigație
+- **API REST** — endpoint-uri complete, documentație Swagger inclusă
+- **Dashboard Live** — grafice interactive cu simulare 14 zile de date senzor
 
 ## Structura proiectului
 
 ```
-Proiect_codMediu/
-├── static/
-│   ├── index.html          ← Pagina finalizată gata de publicare
-│   └── demo.html           ← Versiunea demo
-├── src/safir/
-│   ├── api.py              ← API FastAPI complet cu endpoint-uri
-│   ├── groundwater_forecast.py
-│   ├── soil_moisture_lstm.py
-│   ├── solar_irrigation_controller.py
-│   ├── rl_scheduler.py
-│   ├── dashboard.py
-│   ├── data_ingestion.py
-│   ├── cli.py
-│   └── server.py
+SAFIR/
+├── index.html                        ← Website complet (GitHub Pages)
 ├── data/
-│   └── sample_sensor_data.csv    ← Date de test
-├── setup.py                       ← Configurare pachet
-├── README.md                      ← Documentație
-└── LICENSE                        ← MIT License
+│   └── sample_sensor_data.csv        ← Date de test senzori
+├── src/safir/
+│   ├── api.py                        ← API FastAPI cu toate endpoint-urile
+│   ├── groundwater_forecast.py       ← Model prognoză apă subterană
+│   ├── soil_moisture_lstm.py         ← Model LSTM umiditate sol
+│   ├── solar_irrigation_controller.py← Controler irigații solare
+│   ├── rl_scheduler.py               ← Scheduler Reinforcement Learning
+│   ├── dashboard.py                  ← Logică dashboard
+│   ├── data_ingestion.py             ← Ingestie și validare date
+│   ├── cli.py                        ← Interfață linie de comandă
+│   └── server.py                     ← Server ASGI
+├── setup.py                          ← Configurare pachet Python
+├── requirements.txt                  ← Dependințe
+└── LICENSE                           ← MIT License
 ```
 
-## Instalare și Lansare
-
-### 1. Mediu Python
+## Instalare și Lansare Locală
 
 ```bash
-cd Proiect_codMediu
 python3 -m venv venv
 source venv/bin/activate
-```
-
-### 2. Instalare pachet
-
-```bash
 pip install -e .
+safir serve --host 0.0.0.0 --port 8000
 ```
 
-### 3. Rulează serverul SAFIR
+Deschide apoi `http://localhost:8000` în browser.
 
-```bash
-safir serve --host 127.0.0.1 --port 8000
-```
+## API Endpoints
 
-### 4. Acces pagini
+| Metodă | Endpoint | Descriere |
+|--------|----------|-----------|
+| `POST` | `/sensor` | Trimite date senzor |
+| `GET` | `/sensor` | Obține toate înregistrările |
+| `GET` | `/dashboard` | Sumar tablou de bord |
+| `GET` | `/forecast/groundwater` | Prognoză apă subterană |
+| `GET` | `/project/info` | Detalii proiect |
+| `GET` | `/project/team` | Informații echipă |
+| `GET` | `/api/status` | Status API |
 
-- **Index principal (pagina finalizată):**
-  ```
-  http://127.0.0.1:8000/static/index.html
-  ```
+Documentație Swagger la `http://localhost:8000/docs`.
 
-- **Demo alternativ:**
-  ```
-  http://127.0.0.1:8000/static/demo.html
-  ```
-
-- **API Swagger Documentation:**
-  ```
-  http://127.0.0.1:8000/docs
-  ```
-
-## Endpoint-uri API
-
-### Senzori & Monitorizare
-
-- `POST /sensor` — Trimite date senzor
-- `GET /sensor` — Obține toate datele senzorilor
-- `GET /dashboard` — Sumar tablou de bord cu metrici
-
-### Prognoze
-
-- `GET /forecast/groundwater` — Prognoză apă subterană
-
-### Informații Proiect
-
-- `GET /project/info` — Detalii proiect și caracteristici
-- `GET /project/team` — Informații echipă și organizație
-- `GET /api/status` — Status API și lista endpoint-uri
-
-## Testare rapidă
-
-Pentru a valida un fișier CSV de date cu schema de senzori:
+## Validare date CSV
 
 ```bash
 python3 -m safir ingest data/sample_sensor_data.csv
 ```
 
-## Tehnologii Utilizate
+## Tehnologii
 
-- **Python 3.9+** — Limbaj principal
-- **FastAPI** — Framework web pentru API
-- **TensorFlow** — Model LSTM pentru predicții
-- **Pandas & NumPy** — Procesare date
-- **Scikit-learn** — ML utilities
-- **Chart.js** — Vizualizări grafice pe frontend
+Python 3.11 · FastAPI · TensorFlow/Keras · Pandas · NumPy · Chart.js · MIT License
 
-## Echipa și Organizație
+## Echipa
 
-- **Asociația Grupul Verde** — Coordonare și implementare
-- **35 Tineri din Județul Vrancea** — Design, date, testare și promovare
-- **Scop:** Agricultură durabilă și reziliență climatică
-
-## Publicare și Deployment
-
-### Opțiunea 1: Local (Development)
-
-```bash
-safir serve --host 127.0.0.1 --port 8000
-```
-
-### Opțiunea 2: Public (Production)
-
-```bash
-safir serve --host 0.0.0.0 --port 8000
-```
-
-Apoi configurează un reverse proxy (nginx) și SSL certificate (Let's Encrypt).
-
-### Opțiunea 3: Docker
-
-```bash
-docker build -t safir-irrigation .
-docker run -p 8000:8000 safir-irrigation
-```
-
-## Licență
-
-Acest proiect este licențiat **MIT**. Vezi `LICENSE` pentru detalii complete.
+| | |
+|---|---|
+| **Coordonator** | Marian Dumitru — Asociația Grupul Verde |
+| **55 tineri europeni** | România · Croația · Albania · Danemarca · Germania |
+| **Pilot internațional** | Laos |
 
 ---
 
-**SAFIR © 2026 — Dezvoltat de Asociația Grupul Verde | Pentru o agricultură durabilă și reziliență climatică în Laos și Vrancea**
+**SAFIR © 2026 — Asociația Grupul Verde · Adjud, Vrancea · Open Source MIT**
+
+[grupulverde.ro](https://www.grupulverde.ro)
