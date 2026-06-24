@@ -1,0 +1,14 @@
+# Netlify deployment configuration for SAFIR
+# Static site — no build step needed, publish directly from /static
+
+[build]
+  publish = "static"
+
+# Security headers for all pages
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options    = "nosniff"
+    X-Frame-Options           = "SAMEORIGIN"
+    Referrer-Policy           = "strict-origin-when-cross-origin"
+    Permissions-Policy        = "camera=(), microphone=(), geolocation=()"

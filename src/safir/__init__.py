@@ -1,0 +1,1 @@
+"""SAFIR package entry point."""

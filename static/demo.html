@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SAFIR Demo — Asociația Grupul Verde</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #081b29;
+      --surface: rgba(255, 255, 255, 0.08);
+      --surface-strong: rgba(255, 255, 255, 0.14);
+      --text: #f3f8ff;
+      --muted: #9ec5ff;
+      --accent: #6dd5ed;
+      --accent-strong: #1fa1f2;
+      --success: #7ce3b3;
+      --warning: #f5b25a;
+      --danger: #ff8a75;
+      --radius: 26px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: radial-gradient(circle at top left, rgba(34, 116, 226, 0.18), transparent 25%),
+                  radial-gradient(circle at bottom right, rgba(33, 209, 149, 0.16), transparent 20%),
+                  linear-gradient(180deg, #081b29 0%, #041219 100%);
+      color: var(--text);
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      min-height: 100vh;
+    }
+
+    .page {
+      width: min(1200px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0 48px;
+    }
+
+    header {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+      gap: 30px;
+      align-items: center;
+      padding: 36px 36px 42px;
+      border-radius: var(--radius);
+      background: rgba(10, 32, 52, 0.84);
+      backdrop-filter: blur(20px);
+      box-shadow: 0 35px 90px rgba(0, 0, 0, 0.28);
+      margin-bottom: 28px;
+    }
+
+    header h1 {
+      margin: 0 0 18px;
+      font-size: clamp(2.5rem, 2.5vw, 4rem);
+      line-height: 1.02;
+    }
+
+    header p {
+      margin: 0;
+      max-width: 56rem;
+      font-size: 1.05rem;
+      line-height: 1.75;
+      color: rgba(243, 248, 255, 0.88);
+    }
+
+    .badge {
+      display: inline-flex;
+      gap: 10px;
+      align-items: center;
+      margin-top: 22px;
+      padding: 10px 18px;
+      border-radius: 999px;
+      background: rgba(46, 112, 173, 0.18);
+      color: var(--accent);
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    .badge::before {
+      content: "\1F331";
+    }
+
+    .hero-visual {
+      padding: 28px;
+      border-radius: 30px;
+      background: linear-gradient(180deg, rgba(17, 24, 39, 0.55), rgba(8, 27, 41, 0.95));
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+    }
+
+    .hero-visual h2 {
+      margin: 0 0 14px;
+      font-size: 1.25rem;
+      color: #d7e8ff;
+    }
+
+    .hero-visual p {
+      margin: 0 0 24px;
+      color: rgba(243, 248, 255, 0.77);
+      line-height: 1.8;
+    }
+
+    .hero-stats {
+      display: grid;
+      gap: 18px;
+    }
+
+    .stat {
+      padding: 18px 20px;
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.06);
+      display: grid;
+      gap: 8px;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 1.5rem;
+      color: white;
+    }
+
+    .content {
+      display: grid;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+
+    .panel {
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.06);
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.18);
+      padding: 28px;
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .panel h2 {
+      margin: 0 0 18px;
+      font-size: 1.35rem;
+      color: #e8f5ff;
+    }
+
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    button {
+      border: 0;
+      border-radius: 16px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      font-weight: 700;
+      padding: 14px 20px;
+      transition: transform 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    button.primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+      color: #041219;
+      box-shadow: 0 18px 40px rgba(45, 183, 233, 0.28);
+    }
+
+    button.primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 22px 50px rgba(45, 183, 233, 0.35);
+    }
+
+    button.secondary {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    button.secondary:hover {
+      background: rgba(255, 255, 255, 0.12);
+      transform: translateY(-2px);
+    }
+
+    .metrics {
+      display: grid;
+      gap: 18px;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+
+    .metric-card {
+      padding: 22px;
+      border-radius: 24px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .metric-card span { display: block; color: var(--muted); font-size: 0.82rem; letter-spacing: 0.1em; margin-bottom: 10px; }
+    .metric-card strong { font-size: 1.9rem; display: block; line-height: 1.1; }
+
+    .panel code {
+      display: block;
+      white-space: pre-wrap;
+      word-break: break-word;
+      background: rgba(255, 255, 255, 0.06);
+      padding: 16px;
+      border-radius: 18px;
+      color: #dbe9ff;
+      font-size: 0.95rem;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .section-title::before {
+      content: "";
+      width: 48px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-strong));
+      border-radius: 999px;
+    }
+
+    .team {
+      display: grid;
+      gap: 18px;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    }
+
+    .team-card {
+      padding: 22px;
+      border-radius: 24px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .team-card h3 { margin: 0 0 10px; font-size: 1.15rem; }
+    .team-card p { margin: 0; color: rgba(243, 248, 255, 0.72); line-height: 1.7; }
+
+    footer {
+      margin-top: 30px;
+      text-align: center;
+      color: rgba(255,255,255,0.68);
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 860px) {
+      header { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <div>
+        <span class="badge">Proiect comunitar</span>
+        <h1>SAFIR — Agricultură inteligentă cu 35 de tineri din Vrancea</h1>
+        <p>De la Asociația Grupul Verde, un proiect premium de monitorizare AI a irigațiilor, creat împreună cu 35 de tineri din județul Vrancea. Soluția urmărește transparența, sustenabilitatea și impactul real în agricultură.</p>
+      </div>
+
+      <div class="hero-visual">
+        <h2>Sinergie între dată și climat</h2>
+        <p>Dashboard-ul SAFIR îți arată în mod clar starea solului, nivelul apei subterane, puterea solară și deciziile inteligente pentru irigații.</p>
+        <div class="hero-stats">
+          <div class="stat"><span>Model AI</span><strong>LSTM + RL</strong></div>
+          <div class="stat"><span>Target</span><strong>Laos & Vrancea</strong></div>
+          <div class="stat"><span>Comunitate</span><strong>35 tineri</strong></div>
+        </div>
+      </div>
+    </header>
+
+    <section class="content">
+      <div class="panel">
+        <div class="section-title"></div>
+        <h2>Interfață demo live</h2>
+        <p>Acest demo simulează rularea aplicației SAFIR, oferind vizual o experiență premium de monitorizare și prognoză în timp real.</p>
+        <div class="button-row">
+          <button class="primary" id="loadSample">Încarcă date de probă</button>
+          <button class="secondary" id="loadDashboard">Actualizează tabloul</button>
+          <button class="secondary" id="loadForecast">Generează prognoză</button>
+        </div>
+        <div class="metrics">
+          <div class="metric-card"><span>Stare sistem</span><strong id="metricStatus">În așteptare</strong></div>
+          <div class="metric-card"><span>Ultima actualizare</span><strong id="metricUpdate">N/A</strong></div>
+          <div class="metric-card"><span>Procente sol</span><strong id="metricSoil">-</strong></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="section-title"></div>
+        <h2>Dashboard & vizualizare</h2>
+        <p>Explorează datele senzorului și rezultatele prognozelor direct din API-ul SAFIR. Fiecare informație este concepută pentru decizii de apărață și agricultură durabilă.</p>
+
+        <h3>Date senzor</h3>
+        <code id="sensorSnapshot">Așteaptă date...</code>
+
+        <h3>Sumar dashboard</h3>
+        <code id="dashboardOutput">Așteaptă actualizare...</code>
+      </div>
+
+      <div class="panel">
+        <div class="section-title"></div>
+        <h2>Prognoză apă subterană</h2>
+        <p>Acest modul arată potențiala valoare de apă subterană bazată pe ultima stare de funcționare.</p>
+        <code id="forecastOutput">Apasă butonul „Generează prognoză” pentru rezultatul actual.</code>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="section-title"></div>
+      <h2>Echipa și impactul local</h2>
+      <div class="team">
+        <div class="team-card">
+          <h3>Asociația Grupul Verde</h3>
+          <p>Coordonăm proiectul SAFIR pentru a aduce tehnologie AI și irigații inteligente în comunitățile rurale.</p>
+        </div>
+        <div class="team-card">
+          <h3>35 tineri din Vrancea</h3>
+          <p>Un grup activ de tineri a contribuit la design, colectare date, testare și promovare a soluției.</p>
+        </div>
+        <div class="team-card">
+          <h3>Viziune climat</h3>
+          <p>Proiectul susține adaptarea la schimbările climatice prin analize deschise și instrumente ușor de utilizat.</p>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      Dezvoltat de Asociația Grupul Verde — SAFIR este demonstrativ, scalabil și construit pentru comunitate.
+    </footer>
+  </div>
+
+  <script>
+    const sampleData = [
+      { timestamp: "2026-06-10T06:00:00", soil_moisture_pct: 28.5, solar_power_kw: 0.75, battery_level_pct: 42.0, groundwater_level_m: 7.20 },
+      { timestamp: "2026-06-10T12:00:00", soil_moisture_pct: 29.1, solar_power_kw: 1.20, battery_level_pct: 55.0, groundwater_level_m: 7.18 },
+      { timestamp: "2026-06-10T18:00:00", soil_moisture_pct: 27.8, solar_power_kw: 0.30, battery_level_pct: 38.5, groundwater_level_m: 7.15 },
+      { timestamp: "2026-06-11T06:00:00", soil_moisture_pct: 30.2, solar_power_kw: 0.85, battery_level_pct: 47.0, groundwater_level_m: 7.16 },
+    ];
+
+    const statusLabel = document.getElementById("metricStatus");
+    const updateLabel = document.getElementById("metricUpdate");
+    const soilLabel = document.getElementById("metricSoil");
+    const statusMessage = document.getElementById("sensorSnapshot");
+    const dashboardOutput = document.getElementById("dashboardOutput");
+    const forecastOutput = document.getElementById("forecastOutput");
+
+    const formatData = data => JSON.stringify(data, null, 2);
+
+    const postSampleData = async () => {
+      statusLabel.textContent = "Încarcare...";
+      for (const record of sampleData) {
+        await fetch("/sensor", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(record),
+        });
+      }
+      statusLabel.textContent = "Date încărcate";
+      updateLabel.textContent = new Date().toLocaleString("ro-RO");
+      soilLabel.textContent = `${sampleData[sampleData.length - 1].soil_moisture_pct}%`;
+      statusMessage.textContent = formatData(sampleData[sampleData.length - 1]);
+      dashboardOutput.textContent = "Apasă butonul Actualizează tabloul pentru sumar.";
+      forecastOutput.textContent = "Apasă Generează prognoză pentru rezultatul curent.";
+    };
+
+    const refreshDashboard = async () => {
+      const response = await fetch("/dashboard");
+      const data = await response.json();
+      statusLabel.textContent = data.sensor_count > 0 ? "Tabloul actualizat" : "Fără date";
+      updateLabel.textContent = new Date().toLocaleString("ro-RO");
+      soilLabel.textContent = data.average_soil_moisture_pct ? `${data.average_soil_moisture_pct.toFixed(1)}%` : "-";
+      dashboardOutput.textContent = formatData(data);
+    };
+
+    const getForecast = async () => {
+      const response = await fetch("/forecast/groundwater");
+      if (!response.ok) {
+        forecastOutput.textContent = await response.text();
+        return;
+      }
+      const data = await response.json();
+      forecastOutput.textContent = formatData(data);
+    };
+
+    document.getElementById("loadSample").addEventListener("click", postSampleData);
+    document.getElementById("loadDashboard").addEventListener("click", refreshDashboard);
+    document.getElementById("loadForecast").addEventListener("click", getForecast);
+  </script>
+</body>
+</html>
