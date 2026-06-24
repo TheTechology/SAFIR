@@ -1,8 +1,8 @@
 # Netlify deployment configuration for SAFIR
-# Static site - no build step needed, publish directly from /static
+# Static site - publish directly from root directory
 
 [build]
-  publish = "static"
+  publish = "."
 
   [build.environment]
     PYTHON_VERSION = "3.11"
