@@ -2,7 +2,7 @@
 # Static site — no build step needed, publish directly from /static
 
 [build]
-  publish = "static"
+  publish = "."
 
 # Security headers for all pages
 [[headers]]
