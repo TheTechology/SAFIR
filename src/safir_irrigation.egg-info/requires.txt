@@ -3,6 +3,6 @@ uvicorn[standard]
 pandas
 numpy
 scikit-learn
-tensorflow-cpu
+tensorflow
 pydantic
 matplotlib
